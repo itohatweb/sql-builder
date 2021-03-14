@@ -23,7 +23,7 @@ test("testQueryInsert", function () {
 
   assertEquals(
     sql.trim(),
-    'INSERT INTO `users` (`name`,`password`,`id`) VALUES ("Enok","foo",1) ("Man","bar",2)',
+    `INSERT INTO 'users' ('name','password','id') VALUES ("Enok","foo",1) ("Man","bar",2)`,
   );
 });
 
@@ -39,7 +39,7 @@ test("testQueryUpdate", function () {
 
   assertEquals(
     sql.trim(),
-    'UPDATE `users` SET `name` = "Enok", `password` = "foo", `id` = 1',
+    `UPDATE 'users' SET 'name' = "Enok", 'password' = "foo", 'id' = 1`,
   );
 });
 
@@ -60,7 +60,7 @@ test("testQueryUpdateWithWhere", function () {
 
   assertEquals(
     sql.trim(),
-    'UPDATE `users` SET `name` = "Enok", `password` = "foo", `id` = 1 WHERE `id` = 1 AND `name` LIKE "%n%"',
+    `UPDATE 'users' SET 'name' = "Enok", 'password' = "foo", 'id' = 1 WHERE 'id' = 1 AND 'name' LIKE "%n%"`,
   );
 });
 
@@ -69,7 +69,7 @@ test("testQueryDelete", function () {
 
   const sql = builder.table("users").delete().build();
 
-  assertEquals(sql.trim(), "DELETE FROM `users`");
+  assertEquals(sql.trim(), "DELETE FROM 'users'");
 });
 
 test("testQueryDeleteWithWhere", function () {
@@ -84,7 +84,7 @@ test("testQueryDeleteWithWhere", function () {
 
   assertEquals(
     sql.trim(),
-    'DELETE FROM `users` WHERE `id` = 1 AND `name` LIKE "%n%"',
+    `DELETE FROM 'users' WHERE 'id' = 1 AND 'name' LIKE "%n%"`,
   );
 });
 
@@ -93,7 +93,7 @@ test("testQuerySelectSimple", function () {
 
   const sql = builder.table("users").select("name", "id").build();
 
-  assertEquals(sql.trim(), "SELECT `name`, `id` FROM `users`");
+  assertEquals(sql.trim(), "SELECT 'name', 'id' FROM 'users'");
 });
 
 test("testQuerySelectGroupBy", function () {
@@ -108,7 +108,7 @@ test("testQuerySelectGroupBy", function () {
 
   assertEquals(
     sql.trim(),
-    "SELECT `name`, `id`, `type` FROM `users` GROUP BY `type` HAVING `type` NOT IN (1,2)",
+    "SELECT 'name', 'id', 'type' FROM 'users' GROUP BY 'type' HAVING 'type' NOT IN (1,2)",
   );
 });
 
@@ -123,7 +123,7 @@ test("testQuerySelectWhere", function () {
 
   assertEquals(
     sql.trim(),
-    'SELECT `name`, `id` FROM `users` WHERE (`id` > 1 AND `name` LIKE "%n%")',
+    `SELECT 'name', 'id' FROM 'users' WHERE ('id' > 1 AND 'name' LIKE "%n%")`,
   );
 });
 
@@ -140,7 +140,7 @@ test("testQuerySelectOrder", function () {
 
   assertEquals(
     sql.trim(),
-    'SELECT `name`, `id` FROM `users` WHERE `id` > 1 AND `name` LIKE "%n%" ORDER BY `id` DESC, `name` ASC',
+    `SELECT 'name', 'id' FROM 'users' WHERE 'id' > 1 AND 'name' LIKE "%n%" ORDER BY 'id' DESC, 'name' ASC`,
   );
 });
 
@@ -151,13 +151,13 @@ test("testQuerySelectJoin", function () {
     .table("users")
     .where(Where.field("id").gt(1))
     .where(Where.field("name").like("%n%"))
-    .select("users.id", "users.name", "`uses`.`avatar` as `uavatar`")
+    .select("users.id", "users.name", "'uses'.'avatar' as 'uavatar'")
     .join(Join.left("posts").on("posts.id", "users.id"))
     .build();
 
   assertEquals(
     sql.trim(),
-    'SELECT `users`.`id`, `users`.`name`, `uses`.`avatar` as `uavatar` FROM `users` LEFT OUTER JOIN `posts` ON `posts`.`id` = `users`.`id` WHERE `id` > 1 AND `name` LIKE "%n%"',
+    `SELECT 'users'.'id', 'users'.'name', 'uses'.'avatar' as 'uavatar' FROM 'users' LEFT OUTER JOIN 'posts' ON 'posts'.'id' = 'users'.'id' WHERE 'id' > 1 AND 'name' LIKE "%n%"`,
   );
 });
 
@@ -174,7 +174,7 @@ test("testQuerySelectLimit", function () {
 
   assertEquals(
     sql.trim(),
-    'SELECT * FROM `users` WHERE `id` > 1 AND `name` LIKE "%n%" LIMIT 0, 10',
+    `SELECT * FROM 'users' WHERE 'id' > 1 AND 'name' LIKE "%n%" LIMIT 0, 10`,
   );
 });
 
@@ -185,6 +185,6 @@ test("testQueryClone", function () {
   const clonedSql = clonedBuilder.select("gender", "avatar").build();
   const sql = builder.select("name", "id").build();
 
-  assertEquals(sql.trim(), "SELECT `name`, `id` FROM `users`");
-  assertEquals(clonedSql.trim(), "SELECT `gender`, `avatar` FROM `users`");
+  assertEquals(sql.trim(), "SELECT 'name', 'id' FROM 'users'");
+  assertEquals(clonedSql.trim(), "SELECT 'gender', 'avatar' FROM 'users'");
 });

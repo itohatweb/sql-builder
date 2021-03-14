@@ -18,19 +18,19 @@ export class Query {
 
   private get orderSQL() {
     if (this._orders && this._orders.length) {
-      return `ORDER BY ` + this._orders.map((order) => order.value).join(", ");
+      return `ORDER BY ${this._orders.map((order) => order.value).join(", ")}`;
     }
   }
 
   private get whereSQL() {
     if (this._where && this._where.length) {
-      return `WHERE ` + this._where.join(" AND ");
+      return `WHERE ${this._where.join(" AND ")}`;
     }
   }
 
   private get havingSQL() {
     if (this._having && this._having.length) {
-      return `HAVING ` + this._having.join(" AND ");
+      return `HAVING ${this._having.join(" AND ")}`;
     }
   }
 
@@ -43,8 +43,7 @@ export class Query {
   private get groupSQL() {
     if (this._groupBy && this._groupBy.length) {
       return (
-        "GROUP BY " +
-        this._groupBy.map((f) => replaceParams("??", [f])).join(", ")
+       `GROUP BY ${this._groupBy.map((f) => replaceParams("??", [f])).join(", ")}`
       );
     }
   }
@@ -88,7 +87,7 @@ export class Query {
     assert(!!this._updateValue);
     const set = Object.keys(this._updateValue)
       .map((key) => {
-        return replaceParams(`?? = ?`, [key, this._updateValue[key]]);
+        return replaceParams("?? = ?", [key, this._updateValue[key]]);
       })
       .join(", ");
     return [
@@ -98,7 +97,7 @@ export class Query {
   }
 
   private get deleteSQL() {
-    return [replaceParams(`DELETE FROM ??`, [this._table]), this.whereSQL].join(
+    return [replaceParams("DELETE FROM ??", [this._table]), this.whereSQL].join(
       " ",
     );
   }

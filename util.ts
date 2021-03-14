@@ -15,19 +15,19 @@ export function replaceParams(sql: string, params: any | any[]): string {
       } else if (val === "*") {
         return val;
       } else if (typeof val === "string" && val.includes(".")) {
-        // a.b => `a`.`b`
+        // a.b => 'a'.'b'
         const _arr = val.split(".");
         return replaceParams(_arr.map(() => "??").join("."), _arr);
       } else if (
         typeof val === "string" &&
         (val.includes(" as ") || val.includes(" AS "))
       ) {
-        // a as b => `a` AS `b`
+        // a as b => 'a' AS 'b'
         const newVal = val.replace(" as ", " AS ");
         const _arr = newVal.split(" AS ");
         return replaceParams(_arr.map(() => "??").join(" AS "), _arr);
       } else {
-        return ["`", val, "`"].join("");
+        return ["'", val, "'"].join("");
       }
     }
     // value
