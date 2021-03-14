@@ -76,7 +76,7 @@ export class Query {
     const values = this._insertValues.map((row) => {
       return fields.map((key) => row[key]!);
     });
-    return replaceParams(`INSERT INTO ?? ?? VALUES ${"? ".repeat(len)}`, [
+    return replaceParams(`INSERT IGNORE INTO ?? ?? VALUES ${"? ".repeat(len)}`, [
       this._table,
       fields,
       ...values,
